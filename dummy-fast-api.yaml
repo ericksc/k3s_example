@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: dummy-fast-api
+    namespace: default
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: dummy-fast-api
+    template:
+        metadata:
+            labels:
+                app: dummy-fast-api
+        spec:
+            containers:
+                - name: dummy-fast-api
+                  image: ericksc/dummy-fast-api
+                  imagePullPolicy: Always
+                  ports:
+                  - containerPort: 8000
+                    name: web
+                    protocol: TCP
+                  env:
+                    - name: COW_COLOR
+                      value: purple
+                  readinessProbe:
+                    httpGet:
+                      port: web
+                      path: /

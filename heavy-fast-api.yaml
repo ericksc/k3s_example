@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: heavy-fast-api
+    namespace: default
+spec:
+    replicas: 2
+    selector:
+        matchLabels:
+            app: heavy-fast-api
+    template:
+        metadata:
+            labels:
+                app: heavy-fast-api
+        spec:
+            containers:
+                - name: heavy-fast-api
+                  image: ericksc/heavy-fast-api
+                  imagePullPolicy: Always
+                  ports:
+                  - containerPort: 8000
+                    name: web
+                    protocol: TCP
+                  env:
+                    - name: COW_COLOR
+                      value: purple
+                  readinessProbe:
+                    httpGet:
+                      port: web
+                      path: /
